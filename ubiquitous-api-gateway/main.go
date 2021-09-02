@@ -33,21 +33,6 @@ func loadTheEnv(path string) {
 
 func main() {
 
-	// sigs := make(chan os.Signal, 1)
-	// signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-	// ctx, cancel := context.WithCancel(context.Background())
-	// defer cancel()
-
-	// go func() {
-	// 	select {
-	// 	case sig := <-sigs:
-	// 		log.Println("Signal intercepted:", sig)
-	// 		cancel()
-	// 	case <-ctx.Done():
-	// 	}
-	// }()
-
-	// krakend.RegisterEncoders()
 	loadTheEnv(".env")
 	var cfg config.Parser
 	cfg = config.NewParser()
@@ -55,21 +40,18 @@ func main() {
 		cfg = flexibleconfig.NewTemplateParser(flexibleconfig.Config{
 			Parser:    cfg,
 			Partials:  os.Getenv(fcPartials),
-			Settings:  os.Getenv(fcSettings),
+			Settings:  os.Getenv(fcSettings), //dynamically set this
 			Path:      os.Getenv(fcPath),
 			Templates: os.Getenv(fcTemplates),
 		})
 	}
 
-	// cmd.Execute(cfg, krakend.NewExecutor(ctx))
-
 	port := flag.Int("p", 0, "Port of the service")
 	logLevel := flag.String("l", "ERROR", "Logging level")
 	debug := flag.Bool("d", false, "Enable the debug")
 	configFile := flag.String("c", "./config/kranken.json", "Path to the configuration filename")
-	// flag.Parse()
+	flag.Parse()
 
-	// parser := config.NewParser()
 	serviceConfig, err := cfg.Parse(*configFile)
 	if err != nil {
 		log.Fatal("ERROR", err.Error())
