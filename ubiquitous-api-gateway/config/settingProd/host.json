@@ -1,0 +1,6 @@
+{
+    "host": "host.docker.internal:5051",
+    "port": 8766,
+    "pass": "a-p4ssw0rd",
+    "label": "production"
+}
